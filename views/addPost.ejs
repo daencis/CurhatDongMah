@@ -1,0 +1,13 @@
+<%- include('partial/header.ejs') %>
+
+<form action="/profile/<%= +data %>/add" method="post">
+    <label for="content">What's happening?</label>
+    <input type="text" name="content">
+    
+    <label for="mood">How's your feeling?</label>
+    <input type="text" name="mood">
+    
+    <button type="submit">Post</button>
+</form>
+
+<%- include('partial/footer.ejs') %>
