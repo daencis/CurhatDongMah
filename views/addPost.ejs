@@ -1,12 +1,15 @@
 <%- include('partial/header.ejs') %>
 
-<form action="/profile/<%= +data %>/add" method="post">
+<form action="/profile/<%= data %>/add" method="post">
     <label for="content">What's happening?</label>
     <input type="text" name="content">
     
     <label for="mood">How's your feeling?</label>
-    <input type="text" name="mood">
+    <select name="MoodId">
+        <option value="1">galau</option>
+    </select>
     
+    <input type="hidden" name="UserId" value="<%= data %>">
     <button type="submit">Post</button>
 </form>
 

@@ -26,13 +26,14 @@ class Controller {
 
     static findUser(req, res){
         let idUser = req.params.id
-        Post.findAll({
-            include: User,
+        User.findAll({
+            include: Post,
             where:{
                 id: idUser
             }
         })
         .then(data=>{
+            console.log(data);
             res.render('userProfile.ejs', {data})
         })
         .catch(err=>{
@@ -42,11 +43,24 @@ class Controller {
 
     static addPost(req, res){
         let data = req.params.id
-       res.render('addPost.ejs', {data})
+        res.render('addPost.ejs', {data})
     }
 
     static postPost(req, res){
         console.log(req.body);
+        Post.create({
+            content: req.body.content,
+            UserId: req.body.UserId,
+            MoodId: req.body.MoodId,
+            like:0,
+            dislike:0
+        })
+        .then(()=>{
+            res.redirect(`/profile/${req.body.UserId}`)
+        })
+        .catch(err=>{
+            res.send(err)
+        })
     }
 
 }
