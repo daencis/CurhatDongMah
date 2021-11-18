@@ -77,23 +77,45 @@ class Controller {
     }
 
     static allPost(req, res){
-        const sessionId = req.session.userId
-        let dataUser
-        Post.findAll({
-            include: User
-        })
-        .then(data=>{
-            dataUser = data
-            return Post.findAll({
-                include: Mood
+        const filter = req.query.moodFilter
+        if(req.query.moodFilter){
+            const sessionId = req.session.userId
+            let dataUser
+            Post.findAll({
+                include: User,
+                where:{MoodId: filter}
             })
-        })
-        .then(dataMood =>{
-            res.render('timeline.ejs', {dataMood, dataUser, sessionId})
-        })
-        .catch(err=>{
-            res.send(err)
-        })
+            .then(data=>{
+                dataUser = data
+                return Post.findAll({
+                    include: Mood
+                })
+            })
+            .then(dataMood =>{
+                res.render('filter.ejs', {dataMood, dataUser, sessionId})
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+        }else{
+            const sessionId = req.session.userId
+            let dataUser
+            Post.findAll({
+                include: User
+            })
+            .then(data=>{
+                dataUser = data
+                return Post.findAll({
+                    include: Mood
+                })
+            })
+            .then(dataMood =>{
+                res.render('timeline.ejs', {dataMood, dataUser, sessionId})
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+        }
     }
 
     static findUser(req, res){
