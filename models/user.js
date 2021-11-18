@@ -14,12 +14,31 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Post)
+      User.hasOne(models.Profile)
     }
   };
   User.init({
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    username: {type:DataTypes.STRING,
+    validate:{
+      notEmpty:{
+        msg: "Username kosong, kasih input dong"
+      }
+    }
+    },
+    email: {type:DataTypes.STRING,
+    validate:{
+      isEmail:{
+        msg: "Input email yang bener dong"
+      }
+    }
+    },
+    password: {type:DataTypes.STRING,
+    validate:{
+      notEmpty:{
+        msg: "Passwordnya kosong kaya hati aku"
+      }
+    }
+    }
   }, {
     hooks:{
       beforeCreate (instance, option) {

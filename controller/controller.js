@@ -1,5 +1,8 @@
-const {User, Post, Mood} = require('../models/index')
+const {User, Post, Mood, Profile} = require('../models/index')
 const bcrypt = require('bcryptjs')
+const session = require('express-session')
+const user = require('../models/user')
+
 
 class Controller {
     static landingPage(req, res){
@@ -22,17 +25,19 @@ class Controller {
         })
         .then(data=>{
             if(data){
-                console.log(bcrypt.compareSync(passUser, data.password));
                 const isValidPass = bcrypt.compareSync(passUser, data.password)
-                if(isValidPass) return res.redirect('/timeline')
-                else{
+
+                if(isValidPass){
+                    req.session.userId = data.id
+                   return res.redirect('/timeline') 
+                } else{
                     const error = "invalid username/password"
                     return res.redirect(`/login?err=${error}`)
                 }
             }
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
@@ -41,20 +46,31 @@ class Controller {
     }
 
     static postRegister(req, res){
+        let user
         User.create({
             username: req.body.username,
             email: req.body.email,
             password: req.body.password
         })
-        .then(()=>{
+        .then(data =>{
+            user = data
+            return Profile.create({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                gender: req.body.gender,
+                UserId: user.id
+            })
+        })
+        .then(profile=>{
             res.redirect('/login')
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs')
         })
     }
 
     static allPost(req, res){
+        const sessionId = req.session.userId
         let dataUser
         Post.findAll({
             include: User
@@ -66,14 +82,15 @@ class Controller {
             })
         })
         .then(dataMood =>{
-            res.render('timeline.ejs', {dataMood, dataUser})
+            res.render('timeline.ejs', {dataMood, dataUser, sessionId})
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
     static findUser(req, res){
+        const sessionId = req.session.userId
         let idUser = req.params.id
         User.findAll({
             include: Post,
@@ -82,11 +99,11 @@ class Controller {
             }
         })
         .then(data=>{
-            // console.log(data);
-            res.render('userProfile.ejs', {data})
+            
+            res.render('userProfile.ejs', {data, sessionId})
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
@@ -97,12 +114,11 @@ class Controller {
             res.render('addPost.ejs', {userId, data})
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
     static postPost(req, res){
-        // console.log(req.body);
         Post.create({
             content: req.body.content,
             UserId: req.body.UserId,
@@ -114,7 +130,7 @@ class Controller {
             res.redirect(`/timeline`)
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
@@ -127,9 +143,7 @@ class Controller {
         })
         .then (data => res.redirect(`/profile/${userId}`))
         .catch (err => res.send(err))
-    }
-
-    static updateLike(req,res){
+    render('error.ejs', {err.message})c updateLike(req,res){
         Post.increment(
             'like',
             {where:{
@@ -140,7 +154,7 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
@@ -155,7 +169,7 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.send(err)
+            res.render('error.ejs', {err.message})
         })
     }
 
