@@ -1,4 +1,34 @@
 <%- include('partial/header.ejs') %>
-<%= JSON.stringify(data) %>
+
+    <div style="margin-left:380px; margin-bottom:50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd; width: 700px; padding: 20px">
+        <br>
+    <form action="/profile/<%= data %>/add" method="post">
+        <input type="text" name="content" placeholder="What's happening?">
+        
+        <label for="mood" style="padding-left: 20px;">How's your feeling?</label>
+        <select name="MoodId">
+            <option value="1">Galau</option>
+            <option value="2">Happy</option>
+            <option value="3">B Ajah</option>
+            <option value="4">Sedih Banget</option>
+        </select>
+        <input type="hidden" name="UserId" value="<%= data[0].id %>">   
+        <button type="submit" class="w3-btn w3-green" style="margin-left: 10px;">Post!</button>
+    </form>
+
+        <br>
+
+        <h2 style>Kumpulan Curhatan Kamu: </h2>
+        <% data[0].Posts.forEach((e,index) => { %> 
+        <div style="display:flex">
+            <div style="min-height: 50px; width: 400px; background-color: rgb(192, 192, 192); border-radius: 10px; border: 1px solid orangered; padding: 7px">
+                <p style="text-align:center; line-height:15px"> <%= e.content %> </p>
+            </div>
+            <a href="/profile/<%= data[0].id %>/delete/<%= e.id %>" class="w3-btn w3-red" style="height: 40px; margin:5px 0 0 10px; border-radius: 10px;">Delete</a>
+        </div>
+            <br>
+        <% }) %>
+</div>
+
 
 <%- include('partial/footer.ejs') %>
