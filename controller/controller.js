@@ -101,20 +101,22 @@ class Controller {
     static findUser(req, res){
         const sessionId = req.session.userId
         let idUser = req.params.id
-        User.findAll({
-            include: Post,
-            where:{
-                id: idUser
-            }
+        let user
+        User.findByPk(idUser,{
+            include: Post
         })
-        .then(data=>{
-            res.render('userProfile.ejs', {data, sessionId})
+        .then(data =>{
+            user = data
+            let id = user.id
+            return Profile.findOne({
+                where:{UserId: id}
+            })
+        })
+        .then(profile=>{
+            res.render('userProfile.ejs', {profile, user, sessionId})
         })
         .catch(err=>{
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
@@ -125,10 +127,7 @@ class Controller {
             res.render('addPost.ejs', {userId, data})
         })
         .catch(err=>{
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
@@ -160,10 +159,7 @@ class Controller {
         })
         .then (data => res.redirect(`/profile/${userId}`))
         .catch (err => {
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
@@ -178,10 +174,7 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
@@ -196,13 +189,16 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
+    static getLogout(req, res) {
+        req.session.destroy((err) => {
+            if(err) res.send(err)
+            else res.redirect('/login')
+        })
+    }
 }
 
 module.exports = Controller
