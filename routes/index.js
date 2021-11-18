@@ -16,7 +16,7 @@ route.post('/register', Controller.postRegister)
 route.use(function(req, res, next) {
     if(req.session.userId){
         next()
-    }else{
+    } else {
         const error = "Login dulu dong, kan mau curhat"
         res.redirect(`/login?err=${error}`)
     }

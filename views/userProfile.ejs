@@ -1,12 +1,13 @@
 <%- include('partial/header.ejs') %>
 
-    <div style="margin-left:380px; margin-bottom:50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd; width: 700px; padding: 20px">
-        <br>
-    <%= profile.fullName %>
+    <div style="margin-left:380px; margin-bottom:50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd; width: 900px; padding: 20px">
+
+    <h2> Hello, <%= profile.fullName %> ! </h2>
+
     <form action="/profile/<%= user %>/add" method="post">
-        <input type="text" name="content" placeholder="What's happening?">
+        <input type="text" name="content" placeholder="Curahkan perasaanmu!">
         
-        <label for="mood" style="padding-left: 20px;">How's your feeling?</label>
+        <label for="mood" style="padding-left: 20px;">Suasana hati kamu lagi apanih?</label>
         <select name="MoodId">
             <option value="1">Galau</option>
             <option value="2">Happy</option>
@@ -20,8 +21,8 @@
         <br>
         <h2 style>Kumpulan Curhatan Kamu: </h2>
         <% user.Posts.forEach((e,index) => { %> 
-        <div style="display:flex">
-            <div style="min-height: 50px; width: 400px; background-color: rgb(192, 192, 192); border-radius: 10px; border: 1px solid orangered; padding: 7px">
+        <div style="display:flex;">
+            <div style="min-height: 50px; width: 400px; background-color: #063231;color:antiquewhite; border-radius: 10px; border: 3px solid #28d158; padding: 7px">
                 <p style="text-align:center; line-height:15px"> <%= e.content %> </p>
             </div>
             <a href="/profile/<%= user.id %>/delete/<%= e.id %>" class="w3-btn w3-red" style="height: 40px; margin:5px 0 0 10px; border-radius: 10px;">Delete</a>

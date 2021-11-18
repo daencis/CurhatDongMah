@@ -9,11 +9,9 @@ class Controller {
     }
 
     static login(req, res){
-        if(req.query.err){
-            res.send(req.query.err)
-        }else{
-            res.render('login.ejs')
-        }
+        const {err} = req.query;
+        // console.log(err);
+        res.render('login.ejs', {err})
     }
 
     static checkLogin(req, res){
@@ -23,23 +21,28 @@ class Controller {
             where:{username: nameUser}
         })
         .then(data=>{
+            const error = "Username/Password-nya masih salah kak!"
             if(data){
                 const isValidPass = bcrypt.compareSync(passUser, data.password)
-
+                
                 if(isValidPass){
                     req.session.userId = data.id
+                    
                    return res.redirect('/timeline') 
-                } else{
-                    const error = "invalid username/password"
+                } else {
+                    // console.log('masuk ke bener');
                     return res.redirect(`/login?err=${error}`)
                 }
+            } else {
+                return res.redirect(`/login?err=${error}`) 
             }
         })
         .catch(err=>{
             const message = err.errors.map(el => {
                 return el.message
             })
-            res.render('error.ejs', {message})
+            // res.render('error.ejs', {message})
+            res.redirect(`/login?err=${message}`)
         })
     }
 
@@ -104,7 +107,7 @@ class Controller {
             .catch(err=>{
                 res.send(err)
             })
-        }else{
+        } else {
             const sessionId = req.session.userId
             let dataUser
             Post.findAll({
@@ -226,6 +229,7 @@ class Controller {
             else res.redirect('/login')
         })
     }
+
     static sendEmail(email, name){
         let transporter = nodemailer.createTransport({
           service:'gmail',
