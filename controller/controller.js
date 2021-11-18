@@ -37,7 +37,10 @@ class Controller {
             }
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -65,7 +68,10 @@ class Controller {
             res.redirect('/login')
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -85,7 +91,10 @@ class Controller {
             res.render('timeline.ejs', {dataMood, dataUser, sessionId})
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -99,11 +108,13 @@ class Controller {
             }
         })
         .then(data=>{
-            
             res.render('userProfile.ejs', {data, sessionId})
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -114,7 +125,10 @@ class Controller {
             res.render('addPost.ejs', {userId, data})
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -130,7 +144,10 @@ class Controller {
             res.redirect(`/timeline`)
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -142,7 +159,12 @@ class Controller {
             }
         })
         .then (data => res.redirect(`/profile/${userId}`))
-        .catch (err => res.send(err))
+        .catch (err => {
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
+        })
     }
 
     static updateLike(req,res){
@@ -156,7 +178,10 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -171,7 +196,10 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
