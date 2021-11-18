@@ -41,6 +41,13 @@ class Controller {
         })
     }
 
+    static getLogout(req, res) {
+        req.session.destroy((err) => {
+            if(err) res.send(err)
+            else res.redirect('/login')
+        })
+    }
+
     static register(req, res){
         res.render('register.ejs')
     }
@@ -99,7 +106,6 @@ class Controller {
             }
         })
         .then(data=>{
-            
             res.render('userProfile.ejs', {data, sessionId})
         })
         .catch(err=>{

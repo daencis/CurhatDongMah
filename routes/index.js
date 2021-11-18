@@ -21,6 +21,8 @@ route.use(function(req, res, next) {
     }
 })
 
+route.get('/logout', Controller.getLogout)
+
 route.use('/timeline', timeline)
 route.use('/profile', profileRouter)
 
