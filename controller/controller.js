@@ -17,7 +17,7 @@ class Controller {
             })
         })
         .then(dataMood =>{
-            res.render('timeline.ejs', {dataMood , dataUser})
+            res.render('timeline.ejs', {dataMood, dataUser})
         })
         .catch(err=>{
             res.send(err)
@@ -33,7 +33,7 @@ class Controller {
             }
         })
         .then(data=>{
-            console.log(data);
+            // console.log(data);
             res.render('userProfile.ejs', {data})
         })
         .catch(err=>{
@@ -53,7 +53,7 @@ class Controller {
     }
 
     static postPost(req, res){
-        console.log(req.body);
+        // console.log(req.body);
         Post.create({
             content: req.body.content,
             UserId: req.body.UserId,
@@ -62,12 +62,25 @@ class Controller {
             dislike:0
         })
         .then(()=>{
-            res.redirect(`/profile/${req.body.UserId}`)
+            res.redirect(`/timeline`)
         })
         .catch(err=>{
             res.send(err)
         })
     }
+
+    static deletePost(req, res) {
+        const userId = req.params.id
+        const postId = req.params.postId
+        Post.destroy({where: {
+            id: postId
+            }
+        })
+        .then (data => res.redirect(`/profile/${userId}`))
+        .catch (err => res.send(err))
+    }
+
+
 
 }
 

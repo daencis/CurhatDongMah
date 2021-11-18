@@ -1,6 +1,54 @@
 <%- include('partial/header.ejs') %>
 
-<%= JSON.stringify(dataMood) %>
-<%= JSON.stringify(dataUser) %>
+<div class="container" style="width: 700px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd">
+    <% dataUser.forEach((e,index) => { %>
+        <% if (dataMood[index].Mood.name == 'Galau') { %>
+            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex;">
+                <div style="min-height: 50px; width: 400px; background-color: #FC4A1A; border-radius: 8px;">
+                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
+                </div>  
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
+            </div>
+        <br>
+        <% } %>
+        <% if (dataMood[index].Mood.name == 'Happy') { %>
+            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex;">
+                <div style="min-height: 50px; width: 400px; background-color: #40fc1a; border-radius: 8px;">
+                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
+                </div>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
+            </div>
+        <br>
+        <% } %>
+        <% if (dataMood[index].Mood.name == 'B Ajah') { %>
+            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex;">
+                <div style="min-height: 50px; width: 400px; background-color: #40eaf0; border-radius: 8px;">
+                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
+                </div>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
+            </div>
+        <br>
+        <% } %>
+        <% if (dataMood[index].Mood.name == 'Sedih Banget') { %>
+            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex;">
+                <div style="min-height: 50px; width: 400px; background-color: #010300; border-radius: 8px;">
+                <p style="padding: 7px; color:rgba(202, 202, 202, 0.753)"> <%= e.content %> </p>
+                </div>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
+                <a href="#" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
+            </div>
+        <br>
+        <% } %>
+        
+    <% }) %>
+</div>
+
 
 <%- include('partial/footer.ejs') %>
