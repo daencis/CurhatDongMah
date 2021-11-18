@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Profile.belongsTo(models.User)
     }
+    get fullName(){
+      let panggilan
+      if(this.gender == "pria") panggilan = "Mr."
+      else panggilan = "Mrs."
+      return `${panggilan} ${this.firstName} ${this.lastName}`
+    }
   };
   Profile.init({
     firstName: DataTypes.STRING,

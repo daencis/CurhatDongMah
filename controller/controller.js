@@ -1,8 +1,7 @@
 const {User, Post, Mood, Profile} = require('../models/index')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
-const user = require('../models/user')
-
+const nodemailer = require('nodemailer')
 
 class Controller {
     static landingPage(req, res){
@@ -37,7 +36,10 @@ class Controller {
             }
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -49,7 +51,8 @@ class Controller {
     }
 
     static register(req, res){
-        res.render('register.ejs')
+        const {err} = req.query;
+        res.render('register.ejs', {err})
     }
 
     static postRegister(req, res){
@@ -69,44 +72,75 @@ class Controller {
             })
         })
         .then(profile=>{
+            Controller.sendEmail(user.email, profile.firstName)
             res.redirect('/login')
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.redirect(`/register?err=${message}`)
         })
     }
 
     static allPost(req, res){
-        const sessionId = req.session.userId
-        let dataUser
-        Post.findAll({
-            include: User
-        })
-        .then(data=>{
-            dataUser = data
-            return Post.findAll({
-                include: Mood
+        const filter = req.query.moodFilter
+        if(req.query.moodFilter){
+            const sessionId = req.session.userId
+            let dataUser
+            Post.findAll({
+                include: User,
+                where:{MoodId: filter}
             })
-        })
-        .then(dataMood =>{
-            res.render('timeline.ejs', {dataMood, dataUser, sessionId})
-        })
-        .catch(err=>{
-            res.send(err)
-        })
+            .then(data=>{
+                dataUser = data
+                return Post.findAll({
+                    include: Mood
+                })
+            })
+            .then(dataMood =>{
+                res.render('filter.ejs', {dataMood, dataUser, sessionId})
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+        }else{
+            const sessionId = req.session.userId
+            let dataUser
+            Post.findAll({
+                include: User
+            })
+            .then(data=>{
+                dataUser = data
+                return Post.findAll({
+                    include: Mood
+                })
+            })
+            .then(dataMood =>{
+                res.render('timeline.ejs', {dataMood, dataUser, sessionId})
+            })
+            .catch(err=>{
+                res.send(err)
+            })
+        }
     }
 
     static findUser(req, res){
         const sessionId = req.session.userId
         let idUser = req.params.id
-        User.findAll({
-            include: Post,
-            where:{
-                id: idUser
-            }
+        let user
+        User.findByPk(idUser,{
+            include: Post
         })
-        .then(data=>{
-            res.render('userProfile.ejs', {data, sessionId})
+        .then(data =>{
+            user = data
+            let id = user.id
+            return Profile.findOne({
+                where:{UserId: id}
+            })
+        })
+        .then(profile=>{
+            res.render('userProfile.ejs', {profile, user, sessionId})
         })
         .catch(err=>{
             res.send(err)
@@ -136,7 +170,10 @@ class Controller {
             res.redirect(`/timeline`)
         })
         .catch(err=>{
-            res.send(err)
+            const message = err.errors.map(el => {
+                return el.message
+            })
+            res.render('error.ejs', {message})
         })
     }
 
@@ -148,7 +185,9 @@ class Controller {
             }
         })
         .then (data => res.redirect(`/profile/${userId}`))
-        .catch (err => res.send(err))
+        .catch (err => {
+            res.send(err)
+        })
     }
 
     static updateLike(req,res){
@@ -181,6 +220,44 @@ class Controller {
         })
     }
 
+    static getLogout(req, res) {
+        req.session.destroy((err) => {
+            if(err) res.send(err)
+            else res.redirect('/login')
+        })
+    }
+    static sendEmail(email, name){
+        let transporter = nodemailer.createTransport({
+          service:'gmail',
+          auth: {
+              user: 'curhatdongmahapp@gmail.com',
+              pass: 'curhatdongmah123$'
+          }
+      })
+
+        let mailOptions = {
+          from: 'curhatdongmahapp@gmail.com',
+          to: `${email}`,
+          subject: 'Terima Kasih!',
+          text: `
+        Dear ${name},
+        Terima kasih sudah daftar di Curhat Dong Mah! Jika kamu menerima email ini, akun kamu sudah terdaftar di website kami :)  
+        Kami sangat berterima kasih kamu sudah mendaftar dan kami tunggu curhatan-curhatan kamu di website.
+          
+        Sincerely,
+
+
+        Soon-to-be Devs`
+        }
+
+        transporter.sendMail(mailOptions, (err, data)=>{
+          if (err){
+              console.log(err)
+          } else {
+              console.log('cek email ya')
+          }
+        })
+    }
 }
 
 module.exports = Controller

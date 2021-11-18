@@ -1,12 +1,24 @@
 <%- include('partial/header.ejs') %>
 
 <!-- <%= JSON.stringify(dataUser) %>
-<p>=========</p><br>
+<p>==========</p><br>
 <%= JSON.stringify(dataMood) %> -->
 
+
+
+<form action="/timeline?filter=" method="get">
+    <label>Filter by:</label>
+    <select name="moodFilter">
+        <option value="1">Galau</option>
+        <option value="2">Happy</option>
+        <option value="3">B Ajah</option>
+        <option value="4">Sedih Banget</option>
+    </select>
+    <button type="submit">submit</button>
+</form>
 <div class="container" style="width: 700px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd">
     <% dataUser.forEach((e,index) => { %>
-        <% if (dataMood[index].Mood.name == 'Galau') { %>
+        <% if (dataMood[index].Mood.name === 'Galau') { %>
             <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
             <div style="display: flex;">
                 <div style="min-height: 50px; width: 400px; background-color: #FC4A1A; border-radius: 8px;">
@@ -17,7 +29,7 @@
             </div>
         <br>
         <% } %>
-        <% if (dataMood[index].Mood.name == 'Happy') { %>
+        <% if (dataMood[index].Mood.name === 'Happy') { %>
             <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
             <div style="display: flex;">
                 <div style="min-height: 50px; width: 400px; background-color: #40fc1a; border-radius: 8px;">
@@ -28,7 +40,7 @@
             </div>
         <br>
         <% } %>
-        <% if (dataMood[index].Mood.name == 'B Ajah') { %>
+        <% if (dataMood[index].Mood.name === 'B Ajah') { %>
             <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
             <div style="display: flex;">
                 <div style="min-height: 50px; width: 400px; background-color: #40eaf0; border-radius: 8px;">
@@ -39,7 +51,7 @@
             </div>
         <br>
         <% } %>
-        <% if (dataMood[index].Mood.name == 'Sedih Banget') { %>
+        <% if (dataMood[index].Mood.name === 'Sedih Banget') { %>
             <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
             <div style="display: flex;">
                 <div style="min-height: 50px; width: 400px; background-color: #010300; border-radius: 8px;">
