@@ -42,8 +42,14 @@ class Controller {
     }
 
     static addPost(req, res){
-        let data = req.params.id
-        res.render('addPost.ejs', {data})
+        let userId = req.params.id
+        Mood.findAll()
+        .then(data=>{
+            res.render('addPost.ejs', {userId, data})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
     }
 
     static postPost(req, res){
