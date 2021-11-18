@@ -1,4 +1,5 @@
 const {User, Post, Mood} = require('../models/index')
+const bcrypt = require('bcryptjs')
 
 class Controller {
     static landingPage(req, res){
@@ -6,20 +7,29 @@ class Controller {
     }
 
     static login(req, res){
-        res.render('login.ejs')
+        if(req.query.err){
+            res.send(req.query.err)
+        }else{
+            res.render('login.ejs')
+        }
     }
 
     static checkLogin(req, res){
         let nameUser = req.body.username
         let passUser = req.body.password
         User.findOne({
-            where:{
-                username: nameUser,
-                password: passUser
-            }
+            where:{username: nameUser}
         })
         .then(data=>{
-            res.redirect('/timeline')
+            if(data){
+                console.log(bcrypt.compareSync(passUser, data.password));
+                const isValidPass = bcrypt.compareSync(passUser, data.password)
+                if(isValidPass) return res.redirect('/timeline')
+                else{
+                    const error = "invalid username/password"
+                    return res.redirect(`/login?err=${error}`)
+                }
+            }
         })
         .catch(err=>{
             res.send(err)
