@@ -37,7 +37,7 @@ class Controller {
             }
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -65,7 +65,7 @@ class Controller {
             res.redirect('/login')
         })
         .catch(err=>{
-            res.render('error.ejs')
+            res.send(err)
         })
     }
 
@@ -85,7 +85,7 @@ class Controller {
             res.render('timeline.ejs', {dataMood, dataUser, sessionId})
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -103,7 +103,7 @@ class Controller {
             res.render('userProfile.ejs', {data, sessionId})
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -114,7 +114,7 @@ class Controller {
             res.render('addPost.ejs', {userId, data})
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -130,7 +130,7 @@ class Controller {
             res.redirect(`/timeline`)
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -143,7 +143,9 @@ class Controller {
         })
         .then (data => res.redirect(`/profile/${userId}`))
         .catch (err => res.send(err))
-    render('error.ejs', {err.message})c updateLike(req,res){
+    }
+
+    static updateLike(req,res){
         Post.increment(
             'like',
             {where:{
@@ -154,7 +156,7 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
@@ -169,7 +171,7 @@ class Controller {
             res.redirect('/timeline')
         })
         .catch(err=>{
-            res.render('error.ejs', {err.message})
+            res.send(err)
         })
     }
 
