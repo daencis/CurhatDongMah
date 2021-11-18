@@ -1,8 +1,7 @@
 const {User, Post, Mood, Profile} = require('../models/index')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
-const user = require('../models/user')
-
+const nodemailer = require('nodemailer')
 
 class Controller {
     static landingPage(req, res){
@@ -45,7 +44,8 @@ class Controller {
     }
 
     static register(req, res){
-        res.render('register.ejs')
+        const {err} = req.query;
+        res.render('register.ejs', {err})
     }
 
     static postRegister(req, res){
@@ -65,13 +65,14 @@ class Controller {
             })
         })
         .then(profile=>{
+            Controller.sendEmail(user.email, profile.firstName)
             res.redirect('/login')
         })
         .catch(err=>{
             const message = err.errors.map(el => {
                 return el.message
             })
-            res.render('error.ejs', {message})
+            res.redirect(`/register?err=${message}`)
         })
     }
 
@@ -91,10 +92,7 @@ class Controller {
             res.render('timeline.ejs', {dataMood, dataUser, sessionId})
         })
         .catch(err=>{
-            const message = err.errors.map(el => {
-                return el.message
-            })
-            res.render('error.ejs', {message})
+            res.send(err)
         })
     }
 
@@ -197,6 +195,38 @@ class Controller {
         req.session.destroy((err) => {
             if(err) res.send(err)
             else res.redirect('/login')
+        })
+    }
+    static sendEmail(email, name){
+        let transporter = nodemailer.createTransport({
+          service:'gmail',
+          auth: {
+              user: 'curhatdongmahapp@gmail.com',
+              pass: 'curhatdongmah123$'
+          }
+      })
+
+        let mailOptions = {
+          from: 'curhatdongmahapp@gmail.com',
+          to: `${email}`,
+          subject: 'Terima Kasih!',
+          text: `
+        Dear ${name},
+        Terima kasih sudah daftar di Curhat Dong Mah! Jika kamu menerima email ini, akun kamu sudah terdaftar di website kami :)  
+        Kami sangat berterima kasih kamu sudah mendaftar dan kami tunggu curhatan-curhatan kamu di website.
+          
+        Sincerely,
+
+
+        Soon-to-be Devs`
+        }
+
+        transporter.sendMail(mailOptions, (err, data)=>{
+          if (err){
+              console.log(err)
+          } else {
+              console.log('cek email ya')
+          }
         })
     }
 }

@@ -4,6 +4,7 @@ const Controller = require('../controller/controller')
 const profileRouter = require('./profileRouter')
 const timeline = require('./timeline')
 
+
 route.get('/', Controller.landingPage)
 
 route.get('/login', Controller.login)

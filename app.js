@@ -4,7 +4,6 @@ const port = 3000
 const router = require('./routes/index')
 const session = require('express-session')
 
-
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({extended:true}))
 
