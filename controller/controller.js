@@ -5,6 +5,45 @@ class Controller {
         res.render('home.ejs')
     }
 
+    static login(req, res){
+        res.render('login.ejs')
+    }
+
+    static checkLogin(req, res){
+        let nameUser = req.body.username
+        let passUser = req.body.password
+        User.findOne({
+            where:{
+                username: nameUser,
+                password: passUser
+            }
+        })
+        .then(data=>{
+            res.redirect('/timeline')
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
+
+    static register(req, res){
+        res.render('register.ejs')
+    }
+
+    static postRegister(req, res){
+        User.create({
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        })
+        .then(()=>{
+            res.redirect('/login')
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
+
     static allPost(req, res){
         let dataUser
         Post.findAll({
@@ -73,14 +112,42 @@ class Controller {
         const userId = req.params.id
         const postId = req.params.postId
         Post.destroy({where: {
-            id: postId
+            id: +postId
             }
         })
         .then (data => res.redirect(`/profile/${userId}`))
         .catch (err => res.send(err))
     }
 
+    static updateLike(req,res){
+        Post.increment(
+            'like',
+            {where:{
+                id: req.params.postId
+            }}
+        )
+        .then(()=>{
+            res.redirect('/timeline')
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
 
+    static updateDislike(req, res){
+        Post.increment(
+            'dislike',
+            {where:{
+                id: req.params.postId
+            }}
+        )
+        .then(()=>{
+            res.redirect('/timeline')
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
 
 }
 

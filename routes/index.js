@@ -2,17 +2,21 @@ const express = require('express')
 const route = express.Router()
 const Controller = require('../controller/controller')
 const profileRouter = require('./profileRouter')
+const timeline = require('./timeline')
 
-// app.get('/', Controller.landingPage)
-route.get('/timeline', Controller.allPost)
+route.get('/', Controller.landingPage)
+
+route.get('/test', (req, res)=>{
+    res.render('test.ejs')
+})
+
+route.get('/login', Controller.login)
+route.post('/login', Controller.checkLogin)
+
+route.get('/register', Controller.register)
+route.post('/register', Controller.postRegister)
+
+route.use('/timeline', timeline)
 route.use('/profile', profileRouter)
-
-
-// app.get('/profile/:id', Controller.findUser)
-// app.get('/profile/:id/add', Controller.addPost)
-// app.post('/profile/:id/add', Controller.postPost)
-
-
-
 
 module.exports = route
