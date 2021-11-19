@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
     <style>
         body {font-family: Arial, Helvetica, sans-serif;}
         
@@ -75,6 +75,10 @@
             <img src="http://www.epayment.com.ng/images/blog-wp-login-1200x400.png" alt="Avatar" class="avatar">
             </div>
 
+            <% if(err){ %> 
+              <p style="color: red; font-weight: bold; padding-left: 20px"><%= err %></p>
+            <% } %>
+
             <div class="container">
             <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="username">
@@ -88,9 +92,11 @@
             </label>
             </div>
 
-            <div class="container" style="background-color:#f1f1f1">
-            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn"><a href="/register">Sign Up</a></button>
+            <div class="container signin">
+              <p>Pengen curhat tapi gapunya akun? Gampang, tinggal klik <a href="/register"> Sign in</a>!</p>
+              <a href="/">Back to landing page!</a>
             </div>
+
         </form>
     </div>
 </body>

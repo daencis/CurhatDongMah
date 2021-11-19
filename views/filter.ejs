@@ -1,30 +1,32 @@
 <%- include('partial/header.ejs') %>
 
-<!-- <%= JSON.stringify(dataUser) %>
-<p>==========</p><br>
-<%= JSON.stringify(dataMood) %> -->
 
-<form action="/timeline?filter=" method="get">
-    <label>Filter by:</label>
-    <select name="moodFilter">
-        <option value="1">Galau</option>
-        <option value="2">Happy</option>
-        <option value="3">B Ajah</option>
-        <option value="4">Sedih Banget</option>
-    </select>
-    <button type="submit">submit</button>
-</form>
-<div class="container" style="width: 700px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd">
+
+<div class="container" style="width: 900px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #647c79;">
+    <form action="/timeline?filter=" method="get" style="border: 1px solid green; width: 300px; height: 50px; background-color: #95FF39; margin-left:250px; padding-top: 4px; margin-top: 20px;">
+        <label style="padding-left: 10px;">Filter by:</label>
+        <select name="moodFilter">
+            <option selected="true" disabled="disabled">Choose...</option>
+            <option value="1">Galau</option>
+            <option value="2">Happy</option>
+            <option value="3">B Ajah</option>
+            <option value="4">Sedih Banget</option>
+        </select>
+        <button type="submit" class="w3-btn w3-green">Filter!</button>
+    </form>
+    <br>
     <% dataUser.forEach((e,index) => { %>
-            <div style="display: flex; margin: 5px;">
-                <div style="min-height: 50px; width: 400px; background-color: #FC4A1A; border-radius: 8px;">
-                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
+            <div style="display: flex; margin-left: 100px; margin-top: 20px;">
+                <div style="min-height: 50px; width: 400px; background-color: #5CAD36; border-radius: 8px; border: 2px solid rgb(94, 5, 136);">
+                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> @<%= e.User.username %>: <%= e.content %> </p>
                 </div>  
                 <a href="/timeline/update/<%= e.id %>/like" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
                 <a href="/timeline/update/<%= e.id %>/dislike" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
             </div>
     <% }) %>
+    <br>
 </div>
+
 
 
 <%- include('partial/footer.ejs') %>

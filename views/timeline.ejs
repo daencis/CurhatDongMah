@@ -6,22 +6,25 @@
 
 
 
-<form action="/timeline?filter=" method="get">
-    <label>Filter by:</label>
-    <select name="moodFilter">
-        <option value="1">Galau</option>
-        <option value="2">Happy</option>
-        <option value="3">B Ajah</option>
-        <option value="4">Sedih Banget</option>
-    </select>
-    <button type="submit">submit</button>
-</form>
-<div class="container" style="width: 700px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd">
+
+<div class="container" style="width: 900px; background-color: #f1f0f1; padding: 10px 0 10px 20px; margin-left:380px; margin-bottom: 50px; border-radius: 0 0 20px 20px; border: 5px solid #43d3bd">
+    <form action="/timeline?filter=" method="get" style="border: 1px solid green; width: 300px; height: 50px; background-color: #95FF39; margin-left:250px; padding-top: 4px; margin-top: 20px;">
+        <label style="padding-left: 10px;">Filter by:</label>
+        <select name="moodFilter">
+            <option selected="true" disabled="disabled">Choose...</option>
+            <option value="1">Galau</option>
+            <option value="2">Happy</option>
+            <option value="3">B Ajah</option>
+            <option value="4">Sedih Banget</option>
+        </select>
+        <button type="submit" class="w3-btn w3-green">Filter!</button>
+    </form>
+    <br>
     <% dataUser.forEach((e,index) => { %>
         <% if (dataMood[index].Mood.name === 'Galau') { %>
-            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
-            <div style="display: flex;">
-                <div style="min-height: 50px; width: 400px; background-color: #FC4A1A; border-radius: 8px;">
+            <p style="margin-left: 100px;"><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex; margin-left: 100px;">
+                <div style="min-height: 50px; width: 400px; background-color: #11694E; border-radius: 8px; ">
                 <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
                 </div>  
                 <a href="/timeline/update/<%= e.id %>/like" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
@@ -30,9 +33,9 @@
         <br>
         <% } %>
         <% if (dataMood[index].Mood.name === 'Happy') { %>
-            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
-            <div style="display: flex;">
-                <div style="min-height: 50px; width: 400px; background-color: #40fc1a; border-radius: 8px;">
+            <p style="margin-left: 100px;"><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex; margin-left: 100px;">
+                <div style="min-height: 50px; width: 400px; background-color: #48BF91; border-radius: 8px; ">
                 <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
                 </div>
                 <a href="/timeline/update/<%= e.id %>/like" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
@@ -41,9 +44,9 @@
         <br>
         <% } %>
         <% if (dataMood[index].Mood.name === 'B Ajah') { %>
-            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
-            <div style="display: flex;">
-                <div style="min-height: 50px; width: 400px; background-color: #40eaf0; border-radius: 8px;">
+            <p style="margin-left: 100px;"><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex; margin-left: 100px;">
+                <div style="min-height: 50px; width: 400px; background-color: #8FD9A8; border-radius: 8px;">
                 <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
                 </div>
                 <a href="/timeline/update/<%= e.id %>/like" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
@@ -52,10 +55,10 @@
         <br>
         <% } %>
         <% if (dataMood[index].Mood.name === 'Sedih Banget') { %>
-            <p><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
-            <div style="display: flex;">
-                <div style="min-height: 50px; width: 400px; background-color: #010300; border-radius: 8px;">
-                <p style="padding: 7px; color:rgba(202, 202, 202, 0.753)"> <%= e.content %> </p>
+            <p style="margin-left: 100px;"><%= e.User.username %> sedang "<%= dataMood[index].Mood.name %>": </p>
+            <div style="display: flex; margin-left: 100px;">
+                <div style="min-height: 50px; width: 400px; background-color: #15997A; border-radius: 8px;">
+                <p style="padding: 7px; color:rgba(0, 0, 0, 0.753)"> <%= e.content %> </p>
                 </div>
                 <a href="/timeline/update/<%= e.id %>/like" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid blue; height: 70px">Likes: <%= e.like %></a>
                 <a href="/timeline/update/<%= e.id %>/dislike" class="w3-btn w3-white" style="padding-top: 20px; margin-left: 20px; border-radius: 100%; border: 2px solid red; height: 70px">Dislikes: <%= e.dislike %></a>
